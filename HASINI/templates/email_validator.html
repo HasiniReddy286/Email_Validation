@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Validator</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    width: 30%;
+    padding: 10px;
+    display: inline-block;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  #validationResult {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Email Validator</h1>
+    <form id="emailForm" action="/" method="post">
+      <label for="email">Enter an email address:</label><br>
+      <input type="text" id="email" name="email" placeholder="Enter email">
+      <button type="submit">Validate</button>
+    </form>
+    <div id="validationResult"></div>
+  </div>
+
+  <script>
+    document.getElementById('emailForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+
+      fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({email: email})
+      })
+      .then(response => response.json())
+      .then(data => {
+        const validationResult = data.is_valid ? 'Valid email' : 'Invalid email';
+        document.getElementById('validationResult').innerText = validationResult;
+      });
+    });
+  </script>
+</body>
+</html>
+
